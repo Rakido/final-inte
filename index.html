@@ -172,7 +172,9 @@
   // Paramètres pour le placement des images des fruits sur le globe
   const params = {
       imagePinSize: 0.15,
-      imagePinTranslateY: 0.2
+      imagePinTranslateY: 0.15,
+      imagePinTranslateZ: 0.11,
+      imagePinRotateX: -15
   }
 
   // Paramètres pour la rotation du globe pour le débogage
@@ -280,11 +282,14 @@
 
         // Chargement et ajout de la texture de fruit
         const texture = textureLoader.load(imageUrl, (texture) => {
+            texture.flipY = false;
             const imageMap = new THREE.CircleGeometry(params.imagePinSize, 32);
             const material = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide });
             const fruitImageMesh = new THREE.Mesh(imageMap, material);
-            fruitImageMesh.position.y += params.imagePinTranslateY; // Position ajustée par rapport au pin
-            fruitImageMesh.rotation.y = 1.5; // Ajustement de la rotation si nécessaire
+            //fruitImageMesh.position.y += params.imagePinTranslateY; // Position ajustée par rapport au pin
+            fruitImageMesh.position.y = params.imagePinTranslateY // Ajustement de la rotation si nécessaire
+            fruitImageMesh.position.z = params.imagePinTranslateZ // Ajustement de la rotation si nécessaire
+            fruitImageMesh.rotation.x = params.imagePinRotateX; // Ajustement de la rotation si nécessaire
             pin.userData.isPin = true; // Ajoute une propriété personnalisée pour identifier les pins
             pin.add(fruitImageMesh); // Ajoute l'image du fruit comme enfant du pin
         });
@@ -534,12 +539,35 @@
     const x = Math.cos(latRad) * Math.cos(lngRad);
     const z = Math.cos(latRad) * Math.sin(lngRad);
 
+    const fruitIndex = fruits.indexOf(fruit) + 1;
+   
+    const selectedPin = globeGroup.children[fruitIndex];
+    const pinPosition = new THREE.Vector3();
+    selectedPin.getWorldPosition(pinPosition); // Obtient la position mondiale du pin
+    const r_cam = camera.position.length(); // Utiliser la distance actuelle de la caméra
+    const phi = Math.acos(pinPosition.y / pinPosition.length());
+    const theta = Math.atan2(pinPosition.z, pinPosition.x);
+    const x_cam = r_cam * Math.sin(phi) * Math.cos(theta);
+    const y_cam = r_cam * Math.cos(phi);
+    const z_cam = r_cam * Math.sin(phi) * Math.sin(theta);
+    //camera.position.set(x_cam, y_cam, z_cam);
+    camera.lookAt(pinPosition);
+
     const targetAngleY = Math.atan2(x, z);
+    console.log(targetAngleY)
 
     // Appliquer la rotation au globe pour aligner le fruit avec la direction de la caméra
     // Note: Cela ne tient pas compte des rotations existantes du globe et peut nécessiter des ajustements
     gsap.to(globeGroup.rotation, {
-        y: targetAngleY,
+        //y: targetAngleY,
+        duration: 1,
+        ease: "power4.inOut"
+    });
+
+    gsap.to(camera.position, {
+        x: x_cam,
+        y: y_cam,
+        z: z_cam,
         duration: 1,
         ease: "power4.inOut"
     });
