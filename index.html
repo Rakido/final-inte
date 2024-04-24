@@ -286,15 +286,37 @@
         // Chargement et ajout de la texture de fruit
         const texture = textureLoader.load(imageUrl, (texture) => {
             texture.flipY = false;
-            const imageMap = new THREE.CircleGeometry(params.imagePinSize, 32);
-            const material = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide });
+            const placeholderCircle = new THREE.CircleGeometry(params.imagePinSize, 16);
+            const imageMap = new THREE.CircleGeometry(params.imagePinSize, 16);
+            
+            // Utilisation de MeshStandardMaterial pour accéder à onBeforeCompile
+            const material = new THREE.MeshStandardMaterial({
+                map: texture,
+                side: THREE.DoubleSide,
+                color: 0xffffff,
+                dithering: true,
+                transparent: true, // Assurez-vous que la transparence est activée
+            });
+            console.log(fruitInfo)
+            const fruitColorMaterial = new THREE.MeshBasicMaterial({
+                color: new THREE.Color(fruitInfo.colorProduct),
+                side: THREE.DoubleSide
+            });
+
+            const fruitPlaceholderMesh = new THREE.Mesh(placeholderCircle, fruitColorMaterial);
             const fruitImageMesh = new THREE.Mesh(imageMap, material);
-            //fruitImageMesh.position.y += params.imagePinTranslateY; // Position ajustée par rapport au pin
+            fruitImageMesh.scale.set(0.8, 0.8, 0.8);
+           
+            fruitPlaceholderMesh.position.y = params.imagePinTranslateY// Ajustement de la rotation si nécessaire
+            fruitPlaceholderMesh.position.z = params.imagePinTranslateZ + 0.01 // Ajustement de la rotation si nécessaire
+            fruitPlaceholderMesh.rotation.x = params.imagePinRotateX; // Ajustement de la rotation si nécessaire
+
             fruitImageMesh.position.y = params.imagePinTranslateY // Ajustement de la rotation si nécessaire
             fruitImageMesh.position.z = params.imagePinTranslateZ // Ajustement de la rotation si nécessaire
-            fruitImageMesh.rotation.x = params.imagePinRotateX; // Ajustement de la rotation si nécessaire
+            fruitImageMesh.rotation.x = params.imagePinRotateX; // Ajustement d
+            
             pin.userData.isPin = true; // Ajoute une propriété personnalisée pour identifier les pins
-            pin.add(fruitImageMesh); // Ajoute l'image du fruit comme enfant du pin
+            pin.add(fruitImageMesh, fruitPlaceholderMesh); // Ajoute l'image du fruit comme enfant du pin
         });
 
         // Si c'est le premier pin, appliquez immédiatement une animation de scale

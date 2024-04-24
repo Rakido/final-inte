@@ -4,61 +4,71 @@
       "productName": "Granadilla",
       "city": "Équateur",
       "coords": {"lat": "-1.21093873769599", "lng": "-78.35005074401974"},
-      "image": "images/granadilla.png"
+      "image": "images/granadilla.png", 
+      "colorProduct": "#FFD5D1"
     },
     {
       "productName": "Pitaya",
       "city": "Colombie",
       "coords": {"lat": "3.890244421737529", "lng": "-73.1386364221287"},
-      "image": "images/pitaya.png"
+      "image": "images/pitaya.png",
+      "colorProduct": "#FAEAB2"
     },
     {
       "productName": "Carolina reaper",
       "city": "Espagne",
       "coords": {"lat": "39.88382099771359", "lng": "-3.4713022856979427"},
-      "image": "images/carolina-reaper.png"
+      "image": "images/carolina-reaper.png",
+      "colorProduct": "#EBF3B4"
     },
     {
       "productName": "KognomuSso",
       "city": "Côte d'Ivoire",
       "coords": {"lat": "5.253285717509604", "lng": "-7.016966594773878"},
-      "image": "images/kognomusso.png"
+      "image": "images/kognomusso.png",
+      "colorProduct": "#D2F4DB"
     },
     {
       "productName": "Baie du Miracle",
       "city": "Côte d'Ivoire",
       "coords": {"lat": "7.591854552950674", "lng": "-5.414235775339133"},
-      "image": "images/baie-miracle.png"
+      "image": "images/baie-miracle.png",
+      "colorProduct": "#EBE3FC"
     },
     {
       "productName": "Sapotille",
       "city": "Viêt Nam",
       "coords": {"lat": "17.21611618901781", "lng": "106.65169735753416"},
-      "image": "images/sapotille.png"
+      "image": "images/sapotille.png",
+      "colorProduct": "#F1F0EF"
     },
     {
       "productName": "Fruit de la passion",
       "city": "Vietnam",
       "coords": {"lat": "15.40647635330926", "lng": "108.22795177267524"},
-      "image": "images/fruit-passion.png"
+      "image": "images/fruit-passion.png",
+      "colorProduct": "#EBE3FC"
     },
     {
       "productName": "Fruit du sein",
       "city": "Vietnam",
       "coords": {"lat": "12.29512045298434", "lng": "108.97404401895668"},
-      "image": "images/fruit-du-sein.png"
+      "image": "images/fruit-du-sein.png",
+      "colorProduct": "#EBF3B4"
     },
     {
       "productName": "Fruit du serpent",
       "city": "Indonésie",
       "coords": {"lat": "-1.1775294158918261", "lng": "121.91174575597134"},
-      "image": "images/fruit-du-serpent.png"
+      "image": "images/fruit-du-serpent.png",
+      "colorProduct": "#FFD5D1"
     },
     {
       "productName": "Mangoustan",
       "city": "Indonésie",
       "coords": {"lat": "-4.519730670894846", "lng": "122.32711631779962"},
-      "image": "images/mangoustan.png"
+      "image": "images/mangoustan.png",
+      "colorProduct": "#EBE3FC"
     }
   ]
 }
