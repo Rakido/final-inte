@@ -286,8 +286,8 @@
         // Chargement et ajout de la texture de fruit
         const texture = textureLoader.load(imageUrl, (texture) => {
             texture.flipY = false;
-            const placeholderCircle = new THREE.CircleGeometry(params.imagePinSize, 16);
-            const imageMap = new THREE.CircleGeometry(params.imagePinSize, 16);
+            const placeholderCircle = new THREE.CircleGeometry(params.imagePinSize, 8);
+            const imageMap = new THREE.CircleGeometry(params.imagePinSize, 8);
             
             // Utilisation de MeshStandardMaterial pour accéder à onBeforeCompile
             const material = new THREE.MeshStandardMaterial({
