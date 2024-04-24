@@ -7,7 +7,6 @@
     <title>Croissy Globe</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/gsap.min.js"></script>
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/dat-gui/0.5/dat.gui.min.js"></script>
 </head>
 
 <body>
@@ -185,9 +184,6 @@
       rotationY: 0,
       rotationZ: 0
   };
-  const gui = new dat.GUI();
-  // Add a folder to the dat.gui interface
-  const guiFolder = gui.addFolder('Rotation');
 
   let userDragging = false;
   let disableAutoRotate = false;
@@ -202,6 +198,8 @@
 
   const textureLoader = new THREE.TextureLoader();
   const fbxLoader = new FBXLoader();
+
+  const clock = new THREE.Clock();
 
   // Fonction pour récupérer les données des fruits
   const fetchFruits = () => {
@@ -385,11 +383,21 @@
     //controls = new OrbitControls(camera, canvasEl);
     controls = new CameraControls( camera, renderer.domElement );
  
-    // controls.enablePan = false;
-    // controls.enableZoom = false;
+    // controls.draggingDampingFactor = 0.05; // Amortissement pendant le drag
+    // controls.verticalDragToForward = true;
     // controls.enableDamping = true;
-    // controls.minPolarAngle = .46 * Math.PI;
-    // controls.maxPolarAngle = .46 * Math.PI;
+    // controls.dampingFactor = 0.1;
+    // controls.enableDamping = true;
+    // controls.dampingFactor = 0.1;
+    // controls.minPolarAngle = 0.50 * Math.PI;
+    // controls.maxPolarAngle = 0.50 * Math.PI;
+
+    controls.mouseButtons.wheel = CameraControls.ACTION.NONE;
+    controls.mouseButtons.right = CameraControls.ACTION.NONE;
+    controls.mouseButtons.middle = CameraControls.ACTION.NONE;
+    controls.mouseButtons.left  = CameraControls.ACTION.ROTATE;
+    
+    //controls.azimuthRotateSpeed = 0.1
     // controls.autoRotate = true; // AutoRotate est activé par défaut
     // controls.autoRotateSpeed *= 0;
 
@@ -555,10 +563,13 @@
   var lastTime = 0; // Initialisez lastTime en dehors de la fonction render
 
   function render(time) {
+    const delta = clock.getDelta();
+	const elapsed = clock.getElapsedTime();
+	const updated = controls.update( delta );
     // Mise à jour des contrôles et de la scène
     controls.update();
     //controls.azimuthAngle += 1  * THREE.MathUtils.DEG2RAD;
-
+    
     // Vérifier le survol uniquement si le globe est interactif
     if (isHoverable) {
         checkHover(); // Appel de la fonction de vérification du survol
@@ -575,7 +586,7 @@
         // Calculer le delta de temps en secondes
         lastTime = time * 0.001; // Mettre à jour lastTime pour le prochain frame
         // Appliquer la rotation basée sur le delta de temps
-        globeGroup.rotation.y += rotationSpeed;
+        controls.azimuthAngle += 1 * rotationSpeed;
     }
 
     // Rendu de la scène
@@ -608,16 +619,16 @@
     const z_cam = r_cam * Math.sin(phi) * Math.sin(theta);
     //camera.position.set(x_cam, y_cam, z_cam);
     camera.lookAt(pinPosition);
-
+    console.log(pinPosition)
     const targetAngleY = Math.atan2(x, z);
-    console.log(targetAngleY)
+    console.log(selectedPin)
 
     // Appliquer la rotation au globe pour aligner le fruit avec la direction de la caméra
     // Note: Cela ne tient pas compte des rotations existantes du globe et peut nécessiter des ajustements
     //controls.azimuthAngle += 1  * THREE.MathUtils.DEG2RAD;
     console.log(controls)
     gsap.to(controls, {
-        azimuthAngle: targetAngleY,
+        azimuthAngle: - targetAngleY ,
         duration: 1,
         ease: "power4.inOut"
     });
